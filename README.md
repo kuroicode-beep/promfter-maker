@@ -14,6 +14,9 @@ npm run dev
 
 브라우저: http://localhost:5173
 
+바탕화면 바로가기: `Promfter Maker.lnk` → `web/start-promfter-maker.cmd`  
+(빌드 후 `http://127.0.0.1:4173` preview 실행)
+
 API 키: OS `DEEPSEEK_API_KEY` 또는 `web/.env` 또는 앱 설정 모달.
 
 ## 검증
