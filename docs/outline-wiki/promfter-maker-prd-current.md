@@ -1,9 +1,9 @@
 # Promfter Maker PRD
 
 작성일: 2026-07-14  
-기준 버전: v0.2  
+기준 버전: v0.3  
 대상: ComfyUI / 생성형 AI 프롬프트 변환·관리 데스크톱·웹 앱  
-디자인 기준: Outline 「SVIL Main」 프론트엔드 디자인 가이드 (고대비 다크 + 교보손글씨2019)  
+디자인 기준: Outline 「SVIL Main」 + **Stitch 시안** (`design/stitch/stitch_promfter_maker_ui_mockup/`)  
 LLM: **DeepSeek V4 Flash** (`deepseek-v4-flash`) — 변환·번역 공통
 
 ---
@@ -92,7 +92,14 @@ ComfyUI 워크플로우, 이미지·영상 생성, 일반 LLM, 검색 쿼리 등
 - 제목 미입력 시 기본값: 입력 앞부분 요약 또는 `제목 없음` 라벨.
 - 인라인 편집, 포커스 링 `#ffd479` 준수.
 
-### 4.7 SVIL 디자인 가이드 전면 적용
+### 4.7 UI 디자인 기준 (Stitch + SVIL)
+
+- **레이아웃·컴포넌트 배치**: Stitch 시안을 따른다.  
+  - 메인: `promfter_maker_main_screen/` (사이드 내비 + 입력/변환/최종/복사·번역/히스토리)  
+  - 설정: `promfter_maker_settings_panel/` (글꼴·크기·언어 모달)  
+  - 토큰 문서: `svil_high_contrast_dark/DESIGN.md`
+- **접근성·폰트·색 토큰**: Outline SVIL 가이드를 최종 기준으로 적용한다 (로컬 교보손글씨2019, CDN 금지, Consolas 숫자).
+- Stitch HTML의 CDN(Tailwind/Google Fonts)은 시안 전용이며, 제품 빌드에는 넣지 않는다.
 
 Outline 「SVIL Main」 및 로컬 사본의 **모든 규칙**을 적용한다.
 
@@ -138,20 +145,20 @@ Outline 「SVIL Main」 및 로컬 사본의 **모든 규칙**을 적용한다.
 
 ## 06. 화면 구성 (정보 구조)
 
-위에서 아래:
+Stitch 메인 시안 기준:
 
-1. **카테고리 탭/칩** (선택·추가·삭제)
-2. **프롬프트 입력** (상단)
-3. **변환** (주 버튼 → DeepSeek V4 Flash)
-4. **최종 프롬프트**
-5. **복사하기 | 영어로 번역** (번역 → DeepSeek V4 Flash)
-6. **히스토리** (제목 편집 가능)
+1. **좌측 사이드**: History / Settings / Help (+ 프로필 영역)
+2. **헤더**: 브랜드 Promfter Maker · 카테고리 추가/삭제
+3. **카테고리 탭**: General / Image / Video / Workflow / Search
+4. **프롬프트 입력** → **변환** (DeepSeek V4 Flash)
+5. **최종 프롬프트** → **복사하기 | 영어로 번역** (DeepSeek V4 Flash)
+6. **History** (제목 편집·카테고리 칩·타임스탬프)
 
-설정(글꼴·크기·언어·API 키)은 별도 패널.
+설정은 Stitch 설정 모달: 글꼴 / 크기(S·M·L) / 언어(KR·EN·JA·ZH·VI) / 저장·초기화. API 키는 설정에 포함.
 
 ---
 
-## 07. 비범위 (v0.2)
+## 07. 비범위 (v0.3)
 
 - 클라우드 동기화·계정·멀티디바이스
 - ComfyUI 노드 직접 삽입 / API 자동 전송
@@ -215,5 +222,6 @@ Outline 「SVIL Main」 및 로컬 사본의 **모든 규칙**을 적용한다.
 
 - Outline: SVIL Main 프론트엔드 디자인 가이드  
 - DeepSeek API: model `deepseek-v4-flash`, base `https://api.deepseek.com`  
-- Stitch 디자인 프롬프트: `docs/stitch/promfter-maker-stitch-design-prompt.md`  
+- **Stitch 디자인 소스**: `design/stitch/stitch_promfter_maker_ui_mockup/` (`design/README.md`)  
+- Stitch 생성 프롬프트: `docs/stitch/promfter-maker-stitch-design-prompt.md`  
 - 스킬: `svil-frontend-design`

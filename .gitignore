@@ -1,0 +1,25 @@
+# Dependencies & build
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Logs & caches
+logs/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Vite
+.vite/

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Promfter Maker - Prompt Converter</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400&amp;family=JetBrains+Mono:wght@400&amp;family=Nanum+Pen+Script&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131318;
+            color: #e4e1e9;
+            font-family: 'Bricolage Grotesque', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .handwritten-label {
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 1.25rem;
+            color: #c1c7ce;
+            letter-spacing: 0.05em;
+        }
+
+        /* Override any bold defaults since instructions forbid bold text */
+        * {
+            font-weight: 400 !important;
+        }
+
+        .custom-focus:focus {
+            outline: 3px solid #ffd479 !important;
+            outline-offset: 0;
+        }
+
+        .active-tab-underline {
+            border-bottom: 3px solid #7ec8ff;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .panel-border {
+            border: 1px solid #3a3a48;
+        }
+
+        .control-border {
+            border: 1px solid #6b6b82;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed-variant": "#5b4300",
+                        "inverse-on-surface": "#303035",
+                        "secondary": "#8dcdff",
+                        "surface-container-low": "#1b1b20",
+                        "on-surface": "#e4e1e9",
+                        "inverse-primary": "#396380",
+                        "on-primary": "#00344e",
+                        "error-container": "#93000a",
+                        "outline": "#8c9198",
+                        "tertiary-fixed": "#ffdf9f",
+                        "on-surface-variant": "#c1c7ce",
+                        "primary": "#edf5ff",
+                        "on-primary-container": "#38627f",
+                        "on-secondary-fixed": "#001e30",
+                        "primary-fixed": "#c9e6ff",
+                        "surface-container-highest": "#35343a",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#775904",
+                        "on-error": "#690005",
+                        "on-tertiary": "#402d00",
+                        "surface-dim": "#131318",
+                        "on-secondary-fixed-variant": "#004b70",
+                        "secondary-fixed": "#cae6ff",
+                        "secondary-container": "#036c9e",
+                        "surface-tint": "#a2cbed",
+                        "secondary-fixed-dim": "#8dcdff",
+                        "on-secondary": "#00344f",
+                        "on-primary-fixed": "#001e2f",
+                        "surface-variant": "#35343a",
+                        "on-primary-fixed-variant": "#1e4b67",
+                        "on-tertiary-fixed": "#261a00",
+                        "on-background": "#e4e1e9",
+                        "surface-container-lowest": "#0e0e13",
+                        "primary-container": "#b3ddff",
+                        "background": "#131318",
+                        "surface-bright": "#39383e",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#a2cbed",
+                        "on-secondary-container": "#cde7ff",
+                        "surface": "#131318",
+                        "tertiary": "#fff2e0",
+                        "inverse-surface": "#e4e1e9",
+                        "tertiary-fixed-dim": "#eac168",
+                        "tertiary-container": "#fdd277",
+                        "surface-container-high": "#2a292f",
+                        "outline-variant": "#42474d",
+                        "surface-container": "#1f1f24"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "4px",
+                        "lg": "8px",
+                        "xl": "12px",
+                        "panel": "16px",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "gutter": "24px",
+                        "panel-padding": "24px",
+                        "margin": "32px",
+                        "control-height": "50px",
+                        "base": "4px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Bricolage Grotesque"],
+                        "body-md": ["Bricolage Grotesque"],
+                        "body-lg": ["Bricolage Grotesque"],
+                        "headline-md": ["Bricolage Grotesque"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-sm": ["Bricolage Grotesque"],
+                        "label-md": ["Bricolage Grotesque"]
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em" }],
+                        "body-md": ["16px", { "lineHeight": "1.5" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6" }],
+                        "headline-md": ["32px", { "lineHeight": "1.2" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.3" }],
+                        "label-md": ["14px", { "lineHeight": "1.2" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface min-h-screen selection:bg-[#7ec8ff] selection:text-background">
+<!-- Side Navigation (Predicted Component) -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 flex flex-col pt-20 bg-surface-container border-r border-surface-variant hidden md:flex">
+<div class="px-6 mb-8">
+<h2 class="font-headline-sm text-headline-sm text-primary">Prompt Management</h2>
+<p class="font-label-md text-label-md text-on-surface-variant">Manage your conversions</p>
+</div>
+<nav class="flex-1 px-4 space-y-2">
+<a class="flex items-center gap-4 text-on-surface-variant p-panel-padding hover:bg-surface-container-highest transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant p-panel-padding hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant p-panel-padding hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-label-md text-label-md">Help</span>
+</a>
+</nav>
+<div class="p-6 mt-auto">
+<div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg border border-surface-variant">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div class="overflow-hidden">
+<p class="font-label-md text-label-md truncate">User Profile</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top Navigation -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-background border-b border-surface-variant">
+<div class="max-w-7xl mx-auto px-gutter py-4 flex justify-between items-center">
+<div class="flex flex-col">
+<h1 class="font-display-lg text-display-lg text-primary tracking-tighter">Promfter Maker</h1>
+<span class="font-label-md text-label-md text-secondary tracking-widest uppercase opacity-80">prompt converter</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-32 pb-24 px-gutter md:ml-64">
+<div class="max-w-4xl mx-auto space-y-8">
+<!-- Navigation Tabs -->
+<div class="flex items-center gap-6 overflow-x-auto no-scrollbar border-b border-surface-variant">
+<button class="font-label-md text-label-md text-secondary active-tab-underline pb-4 px-1 whitespace-nowrap">General</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary pb-4 px-1 whitespace-nowrap">Image</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary pb-4 px-1 whitespace-nowrap">Video</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary pb-4 px-1 whitespace-nowrap">Workflow</button>
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-primary pb-4 px-1 whitespace-nowrap">Search</button>
+</div>
+<!-- Input Section -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<label class="handwritten-label">프롬프트 입력</label>
+</div>
+<textarea autofocus="" class="w-full min-h-[150px] p-panel-padding bg-surface-container control-border rounded-xl font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant/30 custom-focus transition-all duration-200 resize-none" placeholder="아이디어를 입력하세요"></textarea>
+<button class="w-full h-control-height bg-primary-container text-background font-label-md text-label-md rounded-lg hover:bg-[#d6ecff] active:scale-95 transition-all duration-200 uppercase tracking-widest">
+                    변환
+                </button>
+</section>
+<!-- Output Section -->
+<section class="space-y-4">
+<label class="handwritten-label">최종 프롬프트</label>
+<div class="relative bg-[#16161d] panel-border rounded-panel p-panel-padding group">
+<textarea class="w-full min-h-[120px] bg-transparent border-none focus:ring-0 font-body-md text-body-md text-on-surface resize-none leading-relaxed" readonly="">매끄럽고 빛나는 금속 재질의 구체가 미래적인 연구실 한가운데 공중에 떠 있는 시네마틱한 3D 렌더링. 연구실은 어두운 톤의 패널과 금색 조명이 포인트로 들어가 있으며, 구체 주위로는 데이터 흐름을 나타내는 푸른색 입자들이 흐르고 있습니다. 초점은 구체의 정교한 질감에 맞추어져 있으며 깊은 피사계 심도를 보여줍니다.</textarea>
+<div class="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 bg-surface-container rounded-md border border-surface-variant hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="flex-1 h-control-height bg-[#1f1f2a] text-[#f5f5f7] control-border font-label-md text-label-md rounded-lg hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">content_copy</span>
+                        복사하기
+                    </button>
+<button class="flex-1 h-control-height bg-[#1f1f2a] text-[#f5f5f7] control-border font-label-md text-label-md rounded-lg hover:bg-surface-container-highest transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 18px;">translate</span>
+                        영어로 번역
+                    </button>
+</div>
+</section>
+<!-- History Section -->
+<section class="space-y-4 pt-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">history</span>
+<label class="handwritten-label text-secondary">History</label>
+</div>
+<div class="space-y-3">
+<!-- Active History Item -->
+<div class="bg-surface-container border border-secondary rounded-lg p-4 flex flex-col gap-2 transition-all">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<input class="bg-transparent border-none p-0 m-0 font-body-md text-body-md text-primary focus:ring-0 w-auto active-input-blink" id="active-title" type="text" value="미래 도시의 새벽"/>
+<span class="w-[1px] h-4 bg-secondary animate-pulse"></span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant opacity-60">2023-11-24 09:12:44</span>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-[#1f1f2a] control-border text-[14px] text-secondary">Image</span>
+<p class="font-label-md text-label-md text-on-surface-variant truncate">사이버펑크 스타일의 네온사인이 가득한 도쿄의 비 내리는 밤...</p>
+</div>
+</div>
+<!-- Regular History Items -->
+<div class="bg-surface-container-low border border-surface-variant rounded-lg p-4 flex flex-col gap-2 hover:border-outline transition-all cursor-pointer">
+<div class="flex justify-between items-center">
+<h4 class="font-body-md text-body-md text-on-surface">강아지 캐릭터 디자인</h4>
+<span class="font-code-sm text-code-sm text-on-surface-variant opacity-60">2023-11-23 18:45:21</span>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-[#1f1f2a] control-border text-[14px] text-on-surface-variant">Workflow</span>
+<p class="font-label-md text-label-md text-on-surface-variant truncate">3D 픽사 스타일의 골든 리트리버가 우주복을 입고 있는...</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-surface-variant rounded-lg p-4 flex flex-col gap-2 hover:border-outline transition-all cursor-pointer">
+<div class="flex justify-between items-center">
+<h4 class="font-body-md text-body-md text-on-surface">추상적인 감정 시각화</h4>
+<span class="font-code-sm text-code-sm text-on-surface-variant opacity-60">2023-11-23 14:02:11</span>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-[#1f1f2a] control-border text-[14px] text-on-surface-variant">General</span>
+<p class="font-label-md text-label-md text-on-surface-variant truncate">외로움이라는 감정을 푸른색 수채화와 기하학적 도형으로...</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-surface-variant rounded-lg p-4 flex flex-col gap-2 hover:border-outline transition-all cursor-pointer">
+<div class="flex justify-between items-center">
+<h4 class="font-body-md text-body-md text-on-surface">유튜브 인트로 영상 기획</h4>
+<span class="font-code-sm text-code-sm text-on-surface-variant opacity-60">2023-11-22 22:58:05</span>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-[#1f1f2a] control-border text-[14px] text-on-surface-variant">Video</span>
+<p class="font-label-md text-label-md text-on-surface-variant truncate">고립된 숲속의 오두막에서 연기가 피어오르는 드론 샷...</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Visual Polish: Atmosphere Overlay -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[100]" style="background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png')"></div>
+<script>
+        // Micro-interaction for the history item focus
+        document.getElementById('active-title')?.addEventListener('focus', function() {
+            this.parentElement.parentElement.parentElement.classList.add('border-secondary');
+        });
+
+        // Simple tab switching logic
+        const tabs = document.querySelectorAll('.font-label-md');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                if(this.parentElement.classList.contains('border-b')) {
+                    tabs.forEach(t => t.classList.remove('active-tab-underline', 'text-secondary'));
+                    tabs.forEach(t => t.classList.add('text-on-surface-variant'));
+                    this.classList.add('active-tab-underline', 'text-secondary');
+                    this.classList.remove('text-on-surface-variant');
+                }
+            });
+        });
+    </script>
+</body></html>
